@@ -1,0 +1,10 @@
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.csprojAssemblyReference.cache
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.PantallaPrincipal.resources
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.Properties.Resources.resources
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.csproj.GenerateResource.cache
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.csproj.CoreCompileInputs.cache
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\bin\Debug\Project1.exe.config
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\bin\Debug\Project1.exe
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\bin\Debug\Project1.pdb
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.exe
+C:\Users\Omar\Documents\Omar\Lenguajes Formales y de programación\Project1\Project1\obj\Debug\Project1.pdb
