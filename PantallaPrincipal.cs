@@ -171,18 +171,19 @@ namespace Project1
                 getTextBox(null).SelectionStart = 0;
                 getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
                 getTextBox(null).SelectionColor = Color.Black;
+                detailsContainer.Panel1.Controls.Clear();
+                Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel",true).First();
+                p.Controls.Clear();
+                Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
+                Label pPais= (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
+                pPais.Text = "";
+                nPais.Text = "";
                 html_tokensFile = "erroes.html";
                 generador.generateErrorsHTMLFile(Analizador.listaErrores, html_tokensFile);
                 MessageBox.Show("Ocurrió un error al leer el código", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Analizador.lexicError = false;
                 Process.Start(html_tokensFile);
             }
-
-        }
-
-        private void addImg(object sender, FileSystemEventArgs e) {
-            
-
 
         }
 

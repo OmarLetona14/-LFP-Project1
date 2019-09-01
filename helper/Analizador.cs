@@ -21,9 +21,9 @@ namespace Project1.helper
         String auxLex;
         List<Char> signos = new List<Char> {'{', '}', ';', '"', ':', '%' };
 
-        private void addToken(Token.TIPO tipo)
+        private void addToken(Token.TIPO tipo, int fila, int columna)
         {
-            Token token = new Token(listaTokens.Count+1, auxLex, tipo);
+            Token token = new Token(listaTokens.Count+1, auxLex,fila,columna, tipo);
             listaTokens.Add(token);
             auxLex = "";
         }
@@ -89,25 +89,25 @@ namespace Project1.helper
                             switch (auxLex.ToLower())
                             {
                                 case "grafica":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_GRAFICA);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_GRAFICA, fila, columna-1);
                                     break;
                                 case "nombre":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_NOMBRE);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_NOMBRE, fila, columna-1);
                                     break;
                                 case "continente":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_CONTINENTE);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_CONTINENTE, fila, columna-1);
                                     break;
                                 case "pais":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_PAIS);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_PAIS, fila, columna-1);
                                     break;
                                 case "poblacion":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_POBLACION);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_POBLACION, fila, columna-1);
                                     break;
                                 case "saturacion":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_SATURACION);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_SATURACION, fila, columna-1);
                                     break;
                                 case "bandera":
-                                    addToken(Token.TIPO.PALABRA_RESERVADA_BANDERA);
+                                    addToken(Token.TIPO.PALABRA_RESERVADA_BANDERA, fila, columna-1);
                                     break;
                                 default:
                                     addError(auxLex, columna, fila, "PALABRA O CARACTER DESCONOCIDO");
@@ -120,7 +120,7 @@ namespace Project1.helper
                                 estado = 1;
                                 auxLex += c;
                             }
-                            addToken(Token.TIPO.DOS_PUNTOS);
+                            addToken(Token.TIPO.DOS_PUNTOS,fila,columna);
 
                         }
                         else if (c.Equals('}'))
@@ -129,7 +129,7 @@ namespace Project1.helper
                             richText.SelectionStart = i;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Red;
-                            addToken(Token.TIPO.LLAVE_DERECHA);
+                            addToken(Token.TIPO.LLAVE_DERECHA, fila, columna);
                         }
                         else
                         {
@@ -155,7 +155,7 @@ namespace Project1.helper
                             richText.SelectionStart = i;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Red;
-                            addToken(Token.TIPO.LLAVE_IZQUIERDA);
+                            addToken(Token.TIPO.LLAVE_IZQUIERDA,fila,columna);
                             estado = 0;
 
                         }
@@ -167,8 +167,10 @@ namespace Project1.helper
                             }
                             estado = 2;
                             auxLex += c;
-
-                            addToken(Token.TIPO.COMILLAS);
+                            richText.SelectionStart = i;
+                            richText.SelectionLength = auxLex.Length;
+                            richText.SelectionColor = Color.Yellow;
+                            addToken(Token.TIPO.COMILLAS,fila,columna);
 
 
                         }
@@ -207,9 +209,12 @@ namespace Project1.helper
                             richText.SelectionStart = started;
                             richText.SelectionLength = auxLex.Length+1;
                             richText.SelectionColor = Color.Yellow;
-                            addToken(Token.TIPO.CADENA);
+                            addToken(Token.TIPO.CADENA,fila,columna-1);
                             auxLex += c;
-                            addToken(Token.TIPO.COMILLAS);
+                            richText.SelectionStart = i;
+                            richText.SelectionLength = auxLex.Length;
+                            richText.SelectionColor = Color.Yellow;
+                            addToken(Token.TIPO.COMILLAS,fila,columna);
                             estado = 4;
                         }
                         else {
@@ -225,21 +230,21 @@ namespace Project1.helper
                             richText.SelectionStart = started;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Green;
-                            addToken(Token.TIPO.NUMERO);
+                            addToken(Token.TIPO.NUMERO,fila,columna-1);
                             auxLex += c;
-                            addToken(Token.TIPO.PORCENTAJE);
+                            addToken(Token.TIPO.PORCENTAJE,fila,columna);
                             estado = 4;
                         }
                         else if (c.Equals(';')) {
                             richText.SelectionStart = started;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Red;
-                            addToken(Token.TIPO.NUMERO);
+                            addToken(Token.TIPO.NUMERO,fila,columna);
                             auxLex += c;
                             richText.SelectionStart = i;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Orange;
-                            addToken(Token.TIPO.PUNTO_Y_COMA);
+                            addToken(Token.TIPO.PUNTO_Y_COMA,fila,columna);
                             estado = 0;
                         }
                         else
@@ -268,7 +273,7 @@ namespace Project1.helper
                             richText.SelectionStart = i;
                             richText.SelectionLength = auxLex.Length;
                             richText.SelectionColor = Color.Orange;
-                            addToken(Token.TIPO.PUNTO_Y_COMA);
+                            addToken(Token.TIPO.PUNTO_Y_COMA,fila,columna);
                             estado = 0;
                         }
                         else

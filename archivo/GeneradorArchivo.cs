@@ -36,6 +36,8 @@ namespace Project1.archivo
                             "<th scope=\"col\"> Numero </th>" +
                             "<th scope=\"col\"> Lexema </th>" +
                             "<th scope=\"col\"> Tipo </th>" +
+                            "<th scope=\"col\"> Fila </th>" +
+                            "<th scope=\"col\"> Columna </th>" +
                           "</tr>";
                 foreach (Token token in tokens)
                 {
@@ -43,6 +45,8 @@ namespace Project1.archivo
                         + "<td >" + token.IdToken+ "</td>"
                         + "<td>" + token.Valor + "</td>"
                         + "<td>" + token.getTipoToken() + "</td>"
+                        + "<td>" + token.Fila + "</td>"
+                        + "<td>" + token.Columna + "</td>"
                     + "</tr>";
                 }
                 init += "</body>" +
@@ -75,20 +79,20 @@ namespace Project1.archivo
                         "<table class=\"table table-dark\" style= \"text - align:center;\" >" +
                         "<tr>" +
                             "<th> Numero de error </th>" +
-                            "<th> Fila </th>" +
-                            "<th> Columna </th>" +
                             "<th> Error </th>" +
                             "<th> Descripcion </th>" +
+                            "<th> Fila </th>" +
+                            "<th> Columna </th>" +
                           "</tr>";
                 foreach (Error error in errores)
                 {
 
                     init += "<tr>"
                             + "<td>" + error.NoError + "</td>"
-                            + "<td>" + error.Fila + "</td>"
-                            + "<td>" + error.Columna + "</td>"
                             + "<td>" + error.Caracter + "</td>"
                             + "<td>" + error.Descripcion + "</td>"
+                            + "<td>" + error.Fila + "</td>"
+                            + "<td>" + error.Columna + "</td>"                          
                         + "</tr>";
                 }
                 init += "</body>" +
