@@ -14,7 +14,6 @@ namespace Project1.helper
         private Pais pais;
         private List<Continente> continentes;
         private List<Pais> paises;
-        private Boolean added;
 
         public Grafico generar(List<Token> salida) {
             for (int x = 0; x<salida.Count;x++) {

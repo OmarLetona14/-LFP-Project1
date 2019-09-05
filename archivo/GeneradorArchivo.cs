@@ -1,4 +1,6 @@
-﻿using Project1.models;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Project1.models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -160,6 +162,57 @@ namespace Project1.archivo
             }
             sw.Close();
 
+        }
+
+        public void generarReportePDF(String path, String imgPath, Pais elegido)
+        {
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream(path, FileMode.OpenOrCreate);
+                Document doc = new Document();
+                PdfWriter.GetInstance(doc, fs);
+                doc.Open();
+
+                Paragraph title = new Paragraph();
+                title.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 25f, BaseColor.GREEN);
+                title.Add("Reporte de resultados" + "\n");
+                doc.Add(title);
+
+                iTextSharp.text.Image graph = iTextSharp.text.Image.GetInstance(imgPath);
+                graph.BorderWidth = 0;
+                float percentage = 0.0f;
+                percentage = 550 / graph.Width;
+                graph.ScalePercent(percentage * 100);
+                doc.Add(graph);
+
+                Paragraph bestTitle = new Paragraph();
+                bestTitle.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 18f, BaseColor.RED);
+                bestTitle.Add("El pais elegido es: " + elegido.Nombre + "\n");
+                doc.Add(bestTitle);
+
+                Paragraph details = new Paragraph();
+                bestTitle.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 11f, BaseColor.BLACK);
+                details.Add("Pais: " + elegido.Nombre + "\n");
+                details.Add("Poblacion: " + elegido.Poblacion + "\n");
+                details.Add("Saturacion: " + elegido.Saturacion + "\n");
+                doc.Add(details);
+                if (File.Exists(elegido.UrlBandera))
+                {
+                    iTextSharp.text.Image banderaImage = iTextSharp.text.Image.GetInstance(elegido.UrlBandera);
+                    banderaImage.BorderWidth = 0;
+                    float percentageimg = 0.0f;
+                    percentageimg = 550 / banderaImage.Width;
+                    banderaImage.ScalePercent(percentage * 100);
+                    doc.Add(banderaImage);
+                }
+                doc.Close();
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Ocurrió un error al intentar accesar al archivo " + "\n" + e.Message);
+            }
         }
 
     }

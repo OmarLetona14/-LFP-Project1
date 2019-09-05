@@ -41,9 +41,9 @@
             this.btnAnalizar = new System.Windows.Forms.Button();
             this.btnGenerarPDF = new System.Windows.Forms.Button();
             this.detailsContainer = new System.Windows.Forms.SplitContainer();
-            this.banderaPanel = new System.Windows.Forms.Panel();
-            this.nombrePaisLbl = new System.Windows.Forms.Label();
             this.poblacionPaisLbl = new System.Windows.Forms.Label();
+            this.nombrePaisLbl = new System.Windows.Forms.Label();
+            this.banderaPanel = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.detailsContainer)).BeginInit();
             this.detailsContainer.Panel2.SuspendLayout();
@@ -166,15 +166,16 @@
             this.detailsContainer.Panel2.Controls.Add(this.nombrePaisLbl);
             this.detailsContainer.Panel2.Controls.Add(this.banderaPanel);
             this.detailsContainer.Size = new System.Drawing.Size(613, 630);
-            this.detailsContainer.SplitterDistance = 428;
+            this.detailsContainer.SplitterDistance = 427;
             this.detailsContainer.TabIndex = 4;
             // 
-            // banderaPanel
+            // poblacionPaisLbl
             // 
-            this.banderaPanel.Location = new System.Drawing.Point(276, 17);
-            this.banderaPanel.Name = "banderaPanel";
-            this.banderaPanel.Size = new System.Drawing.Size(315, 165);
-            this.banderaPanel.TabIndex = 0;
+            this.poblacionPaisLbl.AutoSize = true;
+            this.poblacionPaisLbl.Location = new System.Drawing.Point(14, 112);
+            this.poblacionPaisLbl.Name = "poblacionPaisLbl";
+            this.poblacionPaisLbl.Size = new System.Drawing.Size(0, 17);
+            this.poblacionPaisLbl.TabIndex = 2;
             // 
             // nombrePaisLbl
             // 
@@ -184,13 +185,12 @@
             this.nombrePaisLbl.Size = new System.Drawing.Size(0, 17);
             this.nombrePaisLbl.TabIndex = 1;
             // 
-            // poblacionPaisLbl
+            // banderaPanel
             // 
-            this.poblacionPaisLbl.AutoSize = true;
-            this.poblacionPaisLbl.Location = new System.Drawing.Point(14, 112);
-            this.poblacionPaisLbl.Name = "poblacionPaisLbl";
-            this.poblacionPaisLbl.Size = new System.Drawing.Size(0, 17);
-            this.poblacionPaisLbl.TabIndex = 2;
+            this.banderaPanel.Location = new System.Drawing.Point(276, 17);
+            this.banderaPanel.Name = "banderaPanel";
+            this.banderaPanel.Size = new System.Drawing.Size(315, 165);
+            this.banderaPanel.TabIndex = 0;
             // 
             // PantallaPrincipal
             // 
@@ -203,6 +203,7 @@
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "PantallaPrincipal";
             this.Text = "MainWindow";
             this.menuStrip1.ResumeLayout(false);

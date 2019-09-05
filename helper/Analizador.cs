@@ -208,12 +208,12 @@ namespace Project1.helper
                         {
                             richText.SelectionStart = started;
                             richText.SelectionLength = auxLex.Length+1;
-                            richText.SelectionColor = Color.Yellow;
+                            richText.SelectionColor = Color.DarkGoldenrod;
                             addToken(Token.TIPO.CADENA,fila,columna-1);
                             auxLex += c;
                             richText.SelectionStart = i;
                             richText.SelectionLength = auxLex.Length;
-                            richText.SelectionColor = Color.Yellow;
+                            richText.SelectionColor = Color.DarkGoldenrod;
                             addToken(Token.TIPO.COMILLAS,fila,columna);
                             estado = 4;
                         }
@@ -238,7 +238,7 @@ namespace Project1.helper
                         else if (c.Equals(';')) {
                             richText.SelectionStart = started;
                             richText.SelectionLength = auxLex.Length;
-                            richText.SelectionColor = Color.Red;
+                            richText.SelectionColor = Color.Green;
                             addToken(Token.TIPO.NUMERO,fila,columna);
                             auxLex += c;
                             richText.SelectionStart = i;

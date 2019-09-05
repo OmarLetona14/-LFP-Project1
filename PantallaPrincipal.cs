@@ -1,4 +1,7 @@
-﻿using Project1.archivo;
+﻿
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Project1.archivo;
 using Project1.helper;
 using Project1.models;
 using System;
@@ -19,7 +22,7 @@ namespace Project1
 {
     public partial class PantallaPrincipal : Form
     {
-        private String tab_name, Sa_filename, Op_filename, currentFile, html_tokensFile;
+        private String tab_name, Sa_filename, Op_filename, currentFile, html_tokensFile, generateImg;
         private int page_count;
         RichTextBox codeTxt;
         LeerArchivo reader;
@@ -150,21 +153,21 @@ namespace Project1
             salidaTokens = analizar.analizar(getTextBox(null).Text, getTextBox(null));
             if (!Analizador.lexicError)
             {
-                
+
                 html_tokensFile = "tokens.html";
-                String pngFile = "graphic.png";
+                generateImg = "graphic.png";
                 analizar.imprimirTokens();
-                generador.generateHTMLTokensFile(salidaTokens,html_tokensFile);
+                generador.generateHTMLTokensFile(salidaTokens, html_tokensFile);
                 Process.Start(html_tokensFile);
                 gGraphic = new GenerarGrafica();
                 grafico = new Grafico();
                 grafico = gGraphic.generar(salidaTokens);
                 generador.generateDOTArchive(grafico, "Grafico.dot");
                 btnGenerarPDF.Enabled = true;
-                generador.generateProcess(pngFile, "png");
+                generador.generateProcess(generateImg, "png");
                 paisEncontrado = new Pais();
                 paisEncontrado = encontrar(grafico);
-                generarDescripcion(pngFile, paisEncontrado);
+                generarDescripcion(generateImg, paisEncontrado);
 
             }
             else {
@@ -172,10 +175,10 @@ namespace Project1
                 getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
                 getTextBox(null).SelectionColor = Color.Black;
                 detailsContainer.Panel1.Controls.Clear();
-                Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel",true).First();
+                Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
                 p.Controls.Clear();
                 Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
-                Label pPais= (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
+                Label pPais = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
                 pPais.Text = "";
                 nPais.Text = "";
                 html_tokensFile = "erroes.html";
@@ -187,7 +190,7 @@ namespace Project1
 
         }
 
-        public Image resize(int newWidth, int newHeight, Image srcImage)
+        public System.Drawing.Image resize(int newWidth, int newHeight, System.Drawing.Image srcImage)
         {
             Bitmap newImage = new Bitmap(newWidth, newHeight);
             using (Graphics gr = Graphics.FromImage(newImage))
@@ -195,7 +198,7 @@ namespace Project1
                 gr.SmoothingMode = SmoothingMode.HighQuality;
                 gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                gr.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
+                gr.DrawImage(srcImage, new System.Drawing.Rectangle(0, 0, newWidth, newHeight));
             }
             return newImage;
         }
@@ -207,16 +210,17 @@ namespace Project1
                 Label imgLabel = new Label()
                 {
                     Dock = DockStyle.Fill,
-                    Image = resize(detailsContainer.Panel1.Width, detailsContainer.Panel1.Height, Image.FromFile(urlImagen))
+                    Image = resize(detailsContainer.Panel1.Width, detailsContainer.Panel1.Height, System.Drawing.Image.FromFile(urlImagen))
                 };
                 detailsContainer.Panel1.Controls.Add(imgLabel);
 
                 Panel Bpanel = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
+                Bpanel.Controls.Clear();
                 if (File.Exists(pElegido.UrlBandera)) {
                     Label imgBandera = new Label()
                     {
                         Dock = DockStyle.Fill,
-                        Image = resize(Bpanel.Width, Bpanel.Height, Image.FromFile(pElegido.UrlBandera))
+                        Image = resize(Bpanel.Width, Bpanel.Height, System.Drawing.Image.FromFile(pElegido.UrlBandera))
                     };
                     Bpanel.Controls.Add(imgBandera);
                 }
@@ -224,9 +228,9 @@ namespace Project1
                 Label nombre = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
                 Label poblacion = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
                 nombre.Text = "";
-                poblacion.Text = ""; 
-                nombre.Text += "Nombre: "+pElegido.Nombre;
-                poblacion.Text += "Poblacion: "+pElegido.Poblacion;
+                poblacion.Text = "";
+                nombre.Text += "Nombre: " + pElegido.Nombre;
+                poblacion.Text += "Poblacion: " + pElegido.Poblacion;
 
             }
             else {
@@ -237,35 +241,42 @@ namespace Project1
         private void BtnGenerarPDF_Click(object sender, EventArgs e)
         {
             String pdf = "reporte.pdf";
-            generador.generateProcess(pdf, "pdf");
+            generador.generarReportePDF(pdf, generateImg, paisEncontrado);
             Process.Start(pdf);
         }
 
         Pais encontrar(Grafico graph) {
-            int min = 0;
-            Pais p = new Pais(); 
-            List<Pais> minPaises = new List<Pais>(); 
-            List<Pais> finish = new List<Pais>();
+            Pais p = new Pais();
+            if (graph !=null) {
+                int min = 0;
 
-            foreach (Continente c in graph.Continentes) {
-                min = c.Paises.Min(y => y.Saturacion);
-                IEnumerable<Pais> query = c.Paises.Where(x => x.Saturacion == min);
-                foreach (Pais pM in query.ToList()) {
-                    minPaises.Add(pM);
-                }   
+                List<Pais> minPaises = new List<Pais>();
+                List<Pais> finish = new List<Pais>();
+
+                foreach (Continente c in graph.Continentes)
+                {
+                    min = c.Paises.Min(y => y.Saturacion);
+                    IEnumerable<Pais> query = c.Paises.Where(x => x.Saturacion == min);
+                    foreach (Pais pM in query.ToList())
+                    {
+                        minPaises.Add(pM);
+                    }
+                }
+                min = minPaises.Min(y => y.Saturacion);
+                IEnumerable<Pais> q = minPaises.Where(x => x.Saturacion == min);
+                finish = q.ToList();
+                if (finish.Count == 1)
+                {
+                    p = finish.First();
+                }
+                else
+                {
+                    int minCon = finish.Min(z => z.Continente.Saturacion);
+                    IEnumerable<Pais> qu = finish.Where(x => x.Continente.Saturacion == minCon);
+                    p = finish.First();
+                }
             }
-            min = minPaises.Min(y => y.Saturacion);
-            IEnumerable<Pais> q = minPaises.Where(x => x.Saturacion == min);
-            finish = q.ToList();
-            if (finish.Count == 1)
-            {
-                p = finish.First();
-            }
-            else {
-                int minCon = finish.Min(z => z.Continente.Saturacion);
-                IEnumerable<Pais> qu = finish.Where(x => x.Continente.Saturacion == minCon);
-                p = finish.First();
-            }
+            
             return p;
         }
 
