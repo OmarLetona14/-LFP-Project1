@@ -15,6 +15,7 @@ namespace Project1.helper
 
         private List<Token> listaTokens;
         public static Boolean lexicError;
+        private Boolean errorAdded;
         public static Boolean sintError;
         public static List<Error> listaErrores;
         private int estado;
@@ -33,6 +34,8 @@ namespace Project1.helper
             listaErrores.Add(new Error(listaErrores.Count + 1, lexema, columna, fila, descripcion));
             auxLex = "";
             lexicError = true;
+            errorAdded = true;
+            
         }
 
 
@@ -90,37 +93,65 @@ namespace Project1.helper
                             {
                                 case "grafica":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_GRAFICA, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "nombre":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_NOMBRE, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "continente":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_CONTINENTE, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "pais":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_PAIS, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "poblacion":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_POBLACION, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "saturacion":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_SATURACION, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 case "bandera":
                                     addToken(Token.TIPO.PALABRA_RESERVADA_BANDERA, fila, columna-1);
+                                    richText.SelectionStart = started;
+                                    richText.SelectionColor = Color.Blue;
+                                    estado = 1;
+                                    auxLex += c;
+                                    addToken(Token.TIPO.DOS_PUNTOS, fila, columna);
                                     break;
                                 default:
                                     addError(auxLex, columna, fila, "PALABRA O CARACTER DESCONOCIDO");
                                     break;
                             }
-                            if (!lexicError)
-                            {
-                                richText.SelectionStart = started;
-                                richText.SelectionColor = Color.Blue;
-                                estado = 1;
-                                auxLex += c;
-                            }
-                            addToken(Token.TIPO.DOS_PUNTOS,fila,columna);
+                            
 
                         }
                         else if (c.Equals('}'))

@@ -1,0 +1,31 @@
+digraph G {
+start[shape=Mdiamond label="Grafico 1"];
+start->Asia;
+Asia[shape=record label="{Asia|43}" style=filled fillcolor=green];
+Asia->Japon;
+Japon[shape=record label="{Japon|80}" style=filled fillcolor=red];
+Asia->China;
+China[shape=record label="{China|10}" style=filled fillcolor=white];
+Asia->Korea;
+Korea[shape=record label="{Korea|40}" style=filled fillcolor=green];
+start->America;
+America[shape=record label="{America|43}" style=filled fillcolor=green];
+America->Canada;
+Canada[shape=record label="{Canada|10}" style=filled fillcolor=white];
+America->Guatemala;
+Guatemala[shape=record label="{Guatemala|40}" style=filled fillcolor=green];
+America->Chile;
+Chile[shape=record label="{Chile|60}" style=filled fillcolor=yellow];
+America->Argentina;
+Argentina[shape=record label="{Argentina|16}" style=filled fillcolor=blue];
+America->Brasil;
+Brasil[shape=record label="{Brasil|90}" style=filled fillcolor=red];
+start->Europa;
+Europa[shape=record label="{Europa|45}" style=filled fillcolor=green];
+Europa->Holanda;
+Holanda[shape=record label="{Holanda|85}" style=filled fillcolor=red];
+Europa->Espana;
+Espana[shape=record label="{Espana|20}" style=filled fillcolor=blue];
+Europa->Alemania;
+Alemania[shape=record label="{Alemania|32}" style=filled fillcolor=green];
+}
