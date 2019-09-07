@@ -147,45 +147,48 @@ namespace Project1
 
         private void BtnAnalizar_Click(object sender, EventArgs e)
         {
-            generador = new GeneradorArchivo();
-            analizar = new Analizador();
-            salidaTokens = new List<Token>();
-            salidaTokens = analizar.analizar(getTextBox(null).Text, getTextBox(null));
-            if (!Analizador.lexicError)
-            {
+            if (tabControl.SelectedTab!=null) {
+                generador = new GeneradorArchivo();
+                analizar = new Analizador();
+                salidaTokens = new List<Token>();
+                salidaTokens = analizar.analizar(getTextBox(null).Text, getTextBox(null));
+                if (!Analizador.lexicError)
+                {
 
-                html_tokensFile = "tokens.html";
-                generateImg = "graphic.png";
-                analizar.imprimirTokens();
-                generador.generateHTMLTokensFile(salidaTokens, html_tokensFile);
-                Process.Start(html_tokensFile);
-                gGraphic = new GenerarGrafica();
-                grafico = new Grafico();
-                grafico = gGraphic.generar(salidaTokens);
-                generador.generateDOTArchive(grafico, "Grafico.dot");
-                btnGenerarPDF.Enabled = true;
-                generador.generateProcess(generateImg, "png");
-                paisEncontrado = new Pais();
-                paisEncontrado = encontrar(grafico);
-                generarDescripcion(generateImg, paisEncontrado);
+                    html_tokensFile = "tokens.html";
+                    generateImg = "graphic.png";
+                    analizar.imprimirTokens();
+                    generador.generateHTMLTokensFile(salidaTokens, html_tokensFile);
+                    Process.Start(html_tokensFile);
+                    gGraphic = new GenerarGrafica();
+                    grafico = new Grafico();
+                    grafico = gGraphic.generar(salidaTokens);
+                    generador.generateDOTArchive(grafico, "Grafico.dot");
+                    btnGenerarPDF.Enabled = true;
+                    generador.generateProcess(generateImg, "png");
+                    paisEncontrado = new Pais();
+                    paisEncontrado = encontrar(grafico);
+                    generarDescripcion(generateImg, paisEncontrado);
 
-            }
-            else {
-                getTextBox(null).SelectionStart = 0;
-                getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
-                getTextBox(null).SelectionColor = Color.Black;
-                detailsContainer.Panel1.Controls.Clear();
-                Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
-                p.Controls.Clear();
-                Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
-                Label pPais = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
-                pPais.Text = "";
-                nPais.Text = "";
-                html_tokensFile = "erroes.html";
-                generador.generateErrorsHTMLFile(Analizador.listaErrores, html_tokensFile);
-                MessageBox.Show("Ocurrió un error al leer el código", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Analizador.lexicError = false;
-                Process.Start(html_tokensFile);
+                }
+                else
+                {
+                    getTextBox(null).SelectionStart = 0;
+                    getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
+                    getTextBox(null).SelectionColor = Color.Black;
+                    detailsContainer.Panel1.Controls.Clear();
+                    Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
+                    p.Controls.Clear();
+                    Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
+                    Label pPais = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
+                    pPais.Text = "";
+                    nPais.Text = "";
+                    html_tokensFile = "erroes.html";
+                    generador.generateErrorsHTMLFile(Analizador.listaErrores, html_tokensFile);
+                    MessageBox.Show("Ocurrió un error al leer el código", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Analizador.lexicError = false;
+                    Process.Start(html_tokensFile);
+                }
             }
 
         }
@@ -236,6 +239,21 @@ namespace Project1
             else {
                 MessageBox.Show("No se ha creado el archivo");
             }
+        }
+
+        private void PantallaPrincipal_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnCerrarPestania_Click(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab!=null)
+            {
+                tabControl.SelectedTab.Dispose();
+                page_count -= 1;
+            }
+            
         }
 
         private void BtnGenerarPDF_Click(object sender, EventArgs e)

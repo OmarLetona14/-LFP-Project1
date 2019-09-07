@@ -44,6 +44,7 @@
             this.poblacionPaisLbl = new System.Windows.Forms.Label();
             this.nombrePaisLbl = new System.Windows.Forms.Label();
             this.banderaPanel = new System.Windows.Forms.Panel();
+            this.btnCerrarPestania = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.detailsContainer)).BeginInit();
             this.detailsContainer.Panel2.SuspendLayout();
@@ -135,7 +136,7 @@
             // btnAnalizar
             // 
             this.btnAnalizar.Enabled = false;
-            this.btnAnalizar.Location = new System.Drawing.Point(668, 32);
+            this.btnAnalizar.Location = new System.Drawing.Point(668, 112);
             this.btnAnalizar.Name = "btnAnalizar";
             this.btnAnalizar.Size = new System.Drawing.Size(124, 58);
             this.btnAnalizar.TabIndex = 2;
@@ -146,7 +147,7 @@
             // btnGenerarPDF
             // 
             this.btnGenerarPDF.Enabled = false;
-            this.btnGenerarPDF.Location = new System.Drawing.Point(668, 110);
+            this.btnGenerarPDF.Location = new System.Drawing.Point(668, 195);
             this.btnGenerarPDF.Name = "btnGenerarPDF";
             this.btnGenerarPDF.Size = new System.Drawing.Size(124, 57);
             this.btnGenerarPDF.TabIndex = 3;
@@ -192,11 +193,22 @@
             this.banderaPanel.Size = new System.Drawing.Size(315, 165);
             this.banderaPanel.TabIndex = 0;
             // 
+            // btnCerrarPestania
+            // 
+            this.btnCerrarPestania.Location = new System.Drawing.Point(668, 32);
+            this.btnCerrarPestania.Name = "btnCerrarPestania";
+            this.btnCerrarPestania.Size = new System.Drawing.Size(124, 58);
+            this.btnCerrarPestania.TabIndex = 5;
+            this.btnCerrarPestania.Text = "Cerrar Pestaña";
+            this.btnCerrarPestania.UseVisualStyleBackColor = true;
+            this.btnCerrarPestania.Click += new System.EventHandler(this.BtnCerrarPestania_Click);
+            // 
             // PantallaPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1464, 693);
+            this.Controls.Add(this.btnCerrarPestania);
             this.Controls.Add(this.detailsContainer);
             this.Controls.Add(this.btnGenerarPDF);
             this.Controls.Add(this.btnAnalizar);
@@ -206,6 +218,7 @@
             this.MaximizeBox = false;
             this.Name = "PantallaPrincipal";
             this.Text = "MainWindow";
+            this.Load += new System.EventHandler(this.PantallaPrincipal_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.detailsContainer.Panel2.ResumeLayout(false);
@@ -235,6 +248,7 @@
         private System.Windows.Forms.Panel banderaPanel;
         private System.Windows.Forms.Label poblacionPaisLbl;
         private System.Windows.Forms.Label nombrePaisLbl;
+        private System.Windows.Forms.Button btnCerrarPestania;
     }
 }
 
