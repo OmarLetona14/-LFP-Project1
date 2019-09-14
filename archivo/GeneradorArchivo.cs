@@ -126,7 +126,7 @@ namespace Project1.archivo
             proc.StandardInput.Flush();
             proc.StandardInput.Close();
             proc.Close();
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(5000);
             
         }
 
@@ -169,6 +169,7 @@ namespace Project1.archivo
             FileStream fs = null;
             try
             {
+                
                 fs = new FileStream(path, FileMode.OpenOrCreate);
                 Document doc = new Document();
                 PdfWriter.GetInstance(doc, fs);
@@ -179,12 +180,19 @@ namespace Project1.archivo
                 title.Add("Reporte de resultados" + "\n");
                 doc.Add(title);
 
-                iTextSharp.text.Image graph = iTextSharp.text.Image.GetInstance(imgPath);
-                graph.BorderWidth = 0;
-                float percentage = 0.0f;
-                percentage = 550 / graph.Width;
-                graph.ScalePercent(percentage * 100);
-                doc.Add(graph);
+                if (File.Exists(imgPath)) {
+                    iTextSharp.text.Image graph = iTextSharp.text.Image.GetInstance(imgPath);
+                    graph.BorderWidth = 0;
+                    float percentage = 0.0f;
+                    percentage = 550 / graph.Width;
+                    if (percentage>1)
+                    {
+                        percentage = 1;
+                    }
+                    graph.ScalePercent(percentage * 100);
+                    doc.Add(graph);
+
+                }
 
                 Paragraph bestTitle = new Paragraph();
                 bestTitle.Font = FontFactory.GetFont(FontFactory.COURIER_BOLD, 18f, BaseColor.RED);
@@ -203,7 +211,10 @@ namespace Project1.archivo
                     banderaImage.BorderWidth = 0;
                     float percentageimg = 0.0f;
                     percentageimg = 550 / banderaImage.Width;
-                    banderaImage.ScalePercent(percentage * 100);
+                    if (percentageimg>1) {
+                        percentageimg = 1;
+                    }
+                    banderaImage.ScalePercent(percentageimg * 100);
                     doc.Add(banderaImage);
                 }
                 doc.Close();

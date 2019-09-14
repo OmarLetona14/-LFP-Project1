@@ -132,6 +132,7 @@
             this.manualDeLaAplicaciónToolStripMenuItem.Name = "manualDeLaAplicaciónToolStripMenuItem";
             this.manualDeLaAplicaciónToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
             this.manualDeLaAplicaciónToolStripMenuItem.Text = "Manual de la aplicación";
+            this.manualDeLaAplicaciónToolStripMenuItem.Click += new System.EventHandler(this.ManualDeLaAplicaciónToolStripMenuItem_Click);
             // 
             // btnAnalizar
             // 
@@ -218,6 +219,7 @@
             this.MaximizeBox = false;
             this.Name = "PantallaPrincipal";
             this.Text = "MainWindow";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PantallaPrincipal_FormClosed);
             this.Load += new System.EventHandler(this.PantallaPrincipal_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

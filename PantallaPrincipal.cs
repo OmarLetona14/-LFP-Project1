@@ -1,21 +1,15 @@
-﻿
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using Project1.archivo;
+﻿using Project1.archivo;
 using Project1.helper;
 using Project1.models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Project1
@@ -23,7 +17,7 @@ namespace Project1
     public partial class PantallaPrincipal : Form
     {
         private String tab_name, Sa_filename, Op_filename, currentFile, html_tokensFile, generateImg;
-        private int page_count;
+        private int page_count, contador = 1;
         RichTextBox codeTxt;
         LeerArchivo reader;
         SaveFileDialog saveFile;
@@ -75,7 +69,7 @@ namespace Project1
 
         private void GuardarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tabControl != null)
+            if (tabControl != null && tabControl.SelectedTab != null)
             {
                 if (tabControl.SelectedTab.Text == "")
                 {
@@ -147,49 +141,53 @@ namespace Project1
 
         private void BtnAnalizar_Click(object sender, EventArgs e)
         {
-            if (tabControl.SelectedTab!=null) {
-                generador = new GeneradorArchivo();
-                analizar = new Analizador();
-                salidaTokens = new List<Token>();
-                salidaTokens = analizar.analizar(getTextBox(null).Text, getTextBox(null));
-                if (!Analizador.lexicError)
-                {
+            if (tabControl.SelectedTab != null) {
 
-                    html_tokensFile = "tokens.html";
-                    generateImg = "graphic.png";
-                    analizar.imprimirTokens();
-                    generador.generateHTMLTokensFile(salidaTokens, html_tokensFile);
-                    Process.Start(html_tokensFile);
-                    gGraphic = new GenerarGrafica();
-                    grafico = new Grafico();
-                    grafico = gGraphic.generar(salidaTokens);
-                    generador.generateDOTArchive(grafico, "Grafico.dot");
-                    btnGenerarPDF.Enabled = true;
-                    generador.generateProcess(generateImg, "png");
-                    paisEncontrado = new Pais();
-                    paisEncontrado = encontrar(grafico);
-                    generarDescripcion(generateImg, paisEncontrado);
-
-                }
-                else
+                if (!getTextBox(null).Text.Equals(""))
                 {
-                    getTextBox(null).SelectionStart = 0;
-                    getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
-                    getTextBox(null).SelectionColor = Color.Black;
-                    detailsContainer.Panel1.Controls.Clear();
-                    Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
-                    p.Controls.Clear();
-                    Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
-                    Label pPais = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
-                    pPais.Text = "";
-                    nPais.Text = "";
-                    html_tokensFile = "erroes.html";
-                    generador.generateErrorsHTMLFile(Analizador.listaErrores, html_tokensFile);
-                    MessageBox.Show("Ocurrió un error al leer el código", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Analizador.lexicError = false;
-                    Process.Start(html_tokensFile);
+                    limpiarCampos();
+                    generador = new GeneradorArchivo();
+                    analizar = new Analizador();
+                    salidaTokens = new List<Token>();
+                    salidaTokens = analizar.analizar(getTextBox(null).Text, getTextBox(null));
+                    if (!Analizador.lexicError)
+                    {
+
+                        html_tokensFile = "tokens.html";
+                        generateImg = "graphic" + contador + ".png";
+
+                        analizar.imprimirTokens();
+                        generador.generateHTMLTokensFile(salidaTokens, html_tokensFile);
+                        Process.Start(html_tokensFile);
+                        gGraphic = new GenerarGrafica();
+                        grafico = new Grafico();
+                        grafico = gGraphic.generar(salidaTokens);
+                        generador.generateDOTArchive(grafico, "Grafico.dot");
+                        btnGenerarPDF.Enabled = true;
+                        generador.generateProcess(generateImg, "png");
+                        paisEncontrado = new Pais();
+                        paisEncontrado = encontrar(grafico);
+                        generarDescripcion(generateImg, paisEncontrado);
+                        contador += 1;
+                    }
+                    else
+                    {
+                        getTextBox(null).SelectionStart = 0;
+                        getTextBox(null).SelectionLength = getTextBox(null).Text.Length;
+                        getTextBox(null).SelectionColor = Color.Black;
+                        detailsContainer.Panel1.Controls.Clear();
+                        limpiarCampos();
+                        html_tokensFile = "erroes.html";
+                        generador.generateErrorsHTMLFile(Analizador.listaErrores, html_tokensFile);
+                        MessageBox.Show("Ocurrió un error al leer el código", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Analizador.lexicError = false;
+                        Process.Start(html_tokensFile);
+                    }
                 }
+
+
             }
+
 
         }
 
@@ -248,19 +246,51 @@ namespace Project1
 
         private void BtnCerrarPestania_Click(object sender, EventArgs e)
         {
-            if (tabControl.SelectedTab!=null)
+            if (tabControl.SelectedTab != null)
             {
+                limpiarCampos();
                 tabControl.SelectedTab.Dispose();
                 page_count -= 1;
+            }
+
+        }
+
+        private void PantallaPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+        }
+
+        private void ManualDeLaAplicaciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            String manual_path = "Manual de usuario.pdf";
+            if (File.Exists(manual_path))
+            {
+                Process.Start(manual_path);
             }
             
         }
 
         private void BtnGenerarPDF_Click(object sender, EventArgs e)
         {
-            String pdf = "reporte.pdf";
-            generador.generarReportePDF(pdf, generateImg, paisEncontrado);
-            Process.Start(pdf);
+            if (tabControl.SelectedTab!=null) {
+                if (!getTextBox(null).Text.Equals("")) {
+                    String pdf = "reporte"+contador+".pdf";
+                    generador.generarReportePDF(pdf, generateImg, paisEncontrado);
+                    Process.Start(pdf);
+                }
+                else
+                {
+
+                    MessageBox.Show("No ha introducido ningun archivo valido para generar el reporte");
+                    
+                }
+
+            }
+            else
+            {
+
+                MessageBox.Show("No ha introducido ningun archivo valido para generar el reporte");
+            }
+            
         }
 
         Pais encontrar(Grafico graph) {
@@ -270,9 +300,9 @@ namespace Project1
 
                 List<Pais> minPaises = new List<Pais>();
                 List<Pais> finish = new List<Pais>();
-
                 foreach (Continente c in graph.Continentes)
                 {
+
                     min = c.Paises.Min(y => y.Saturacion);
                     IEnumerable<Pais> query = c.Paises.Where(x => x.Saturacion == min);
                     foreach (Pais pM in query.ToList())
@@ -294,12 +324,19 @@ namespace Project1
                     p = finish.First();
                 }
             }
-            
             return p;
         }
 
-        
+        private void limpiarCampos() {
+            detailsContainer.Panel1.Controls.Clear();
+            Panel p = (Panel)detailsContainer.Panel2.Controls.Find("banderaPanel", true).First();
+            p.Controls.Clear();
+            Label nPais = (Label)detailsContainer.Panel2.Controls.Find("nombrePaisLbl", true).First();
+            Label pPais = (Label)detailsContainer.Panel2.Controls.Find("poblacionPaisLbl", true).First();
+            pPais.Text = "";
+            nPais.Text = "";
 
+        }
 
         private void abrirArchivo(Boolean nuevo)
         {

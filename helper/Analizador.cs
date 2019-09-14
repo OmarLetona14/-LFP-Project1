@@ -11,11 +11,8 @@ namespace Project1.helper
 {
     class Analizador
     {
-
-
         private List<Token> listaTokens;
         public static Boolean lexicError;
-        private Boolean errorAdded;
         public static Boolean sintError;
         public static List<Error> listaErrores;
         private int estado;
@@ -34,8 +31,6 @@ namespace Project1.helper
             listaErrores.Add(new Error(listaErrores.Count + 1, lexema, columna, fila, descripcion));
             auxLex = "";
             lexicError = true;
-            errorAdded = true;
-            
         }
 
 
@@ -313,6 +308,7 @@ namespace Project1.helper
                             {
                                 if (!errorLexico(c))
                                 {
+                                    estado = 0;
                                     addError(Char.ToString(c), columna, fila, "CARACTER DESCONOCIDO");
                                 }
                                 else
