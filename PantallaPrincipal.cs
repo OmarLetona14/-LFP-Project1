@@ -266,6 +266,9 @@ namespace Project1
             {
                 Process.Start(manual_path);
             }
+            else {
+                MessageBox.Show("El manual de usuario no se encontró");
+            }
             
         }
 
@@ -429,8 +432,6 @@ namespace Project1
                 }
                 return txtBox;
             }
-
-
 
         }
     }
